@@ -10,5 +10,8 @@
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.x"
+  },
+  "devDependencies": {
+    "optimist": "~0.5.0"
   }
 }

@@ -1,4 +1,17 @@
 var usergrid = require('usergrid');
+var argv = require('optimist').argv;
+
+var options = {
+    sessionId: argv.session || Math.ceil(Math.random() * 10000),
+    referencePoint: {
+        latitude: argv.lat || 40.79234133,
+        longitude: argv.lon || 29.46821250
+    },
+    times: argv.times || 10,
+    interval: argv.interval || 10000
+};
+
+console.log("\nrunning with options:\n\n", options);
 
 var client = new usergrid.client({
     URI: 'http://usergridstack.dnsdynamic.com:8080',
@@ -7,29 +20,24 @@ var client = new usergrid.client({
     logging: true
 });
 
-var sessionId = Math.ceil(Math.random() * 10000);
+var i = 1;
 
-var referencePoint = {
-    latitude: 40.79234133,
-    longitude: 29.46821250
-};
-
-setInterval(function() {
+var interval = setInterval(function() {
     var latitude, longitude;
 
     if (Math.random() > 0.5) {
-        latitude = referencePoint.latitude + Math.random() * 0.0001;
-        longitude = referencePoint.longitude + Math.random() * 0.0001;
+        latitude = options.referencePoint.latitude + Math.random() * 0.0001;
+        longitude = options.referencePoint.longitude + Math.random() * 0.0001;
     } else {
-        latitude = referencePoint.latitude - Math.random() * 0.0001;
-        longitude = referencePoint.longitude - Math.random() * 0.0001;
+        latitude = options.referencePoint.latitude - Math.random() * 0.0001;
+        longitude = options.referencePoint.longitude - Math.random() * 0.0001;
     }
 
     var location = new usergrid.entity({
         client: client,
         data: {
             type: 'locations',
-            session_id: sessionId,
+            session_id: options.sessionId,
             latitude: latitude,
             longitude: longitude
         }
@@ -41,10 +49,16 @@ setInterval(function() {
         console.log(err ? 'Error' : '');
 
         if (!err) {
-            referencePoint = {
+            options.referencePoint = {
                 latitude: latitude,
                 longitude: longitude
             };
         }
     });
-}, 10000);
+
+    i++;
+
+    if (i > options.times) {
+        clearInterval(interval);
+    }
+}, options.interval);
