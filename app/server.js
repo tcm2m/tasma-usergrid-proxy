@@ -22,7 +22,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/locations', function(request, response) {
-    var gpsData = nmea.parse(request.body.gps_data);
+    var gpsData = nmea.parse(request.params.gps_data);
 
     console.log(request.body);
 
@@ -30,7 +30,7 @@ app.get('/locations', function(request, response) {
         client: client,
         data: {
             type: 'locations',
-            session_id: request.body.session_id,
+            session_id: request.params.session_id,
             latitude: gpsData.latitude,
             longitude: gpsData.longitude
         }
