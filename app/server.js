@@ -22,15 +22,13 @@ app.get('/', function(request, response) {
 });
 
 app.get('/locations', function(request, response) {
-    var gpsData = nmea.parse(request.params.gps_data);
-
-    console.log(request.body);
+    var gpsData = nmea.parse(request.query.gps_data);
 
     var loc = new usergrid.entity({
         client: client,
         data: {
             type: 'locations',
-            session_id: request.params.session_id,
+            session_id: request.query.session_id,
             latitude: gpsData.latitude,
             longitude: gpsData.longitude
         }
