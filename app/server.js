@@ -21,7 +21,7 @@ app.get('/', function(request, response) {
     response.send('Tasma Usergrid Proxy Server');
 });
 
-app.post('/locations', function(request, response) {
+app.get('/locations', function(request, response) {
     var gpsData = nmea.parse(request.body.gps_data);
 
     console.log(request.body);
