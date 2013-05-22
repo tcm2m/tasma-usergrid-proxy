@@ -24,6 +24,8 @@ app.get('/', function(request, response) {
 app.post('/locations', function(request, response) {
     var gpsData = nmea.parse(request.body.gps_data);
 
+    console.log(request.body);
+
     var loc = new usergrid.entity({
         client: client,
         data: {
