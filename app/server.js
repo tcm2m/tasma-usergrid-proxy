@@ -22,6 +22,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/locations', function(request, response) {
+    request.connection.setTimeout(10000);
     var gpsData = nmea.parse(request.query.gps_data);
 
     var loc = new usergrid.entity({
