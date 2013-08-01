@@ -4,7 +4,6 @@ var usergrid = require('usergrid');
 var app = express();
 
 app.use(express.logger());
-app.use(express.bodyParser());
 
 app.configure('development', function() {
     app.use(express.errorHandler());
