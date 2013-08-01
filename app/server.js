@@ -3,7 +3,7 @@ var nmea = require('nmea-0183');
 var usergrid = require('usergrid');
 var app = express();
 
-app.use(express.logger());
+app.use(express.logger('dev'));
 
 app.configure('development', function() {
     app.use(express.errorHandler());
