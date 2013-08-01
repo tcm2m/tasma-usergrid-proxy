@@ -6,37 +6,37 @@ var app = express();
 app.use(express.logger());
 app.use(express.bodyParser());
 
-app.configure('development', function(){
+app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
 var client = new usergrid.client({
-    URI: 'http://usergridstack.dnsdynamic.com:8080',
-    orgName: 'deneme',
+    orgName: 'tcm2m',
     appName: 'sandbox',
     logging: true
 });
 
-app.get('/', function(request, response) {
-    response.send('Tasma Usergrid Proxy Server');
+app.get('/', function(req, res) {
+    res.send('Tasma Usergrid Proxy Server');
 });
 
-app.get('/locations', function(request, response) {
-    request.connection.setTimeout(10000);
-    var gpsData = nmea.parse(request.query.gps_data);
+app.get('/locations', function(req, res) {
+    req.connection.setTimeout(10000);
+
+    var gpsData = nmea.parse(req.query.gps_data);
 
     var loc = new usergrid.entity({
         client: client,
         data: {
             type: 'locations',
-            session_id: request.query.session_id,
+            session_id: req.query.session_id,
             latitude: gpsData.latitude,
             longitude: gpsData.longitude
         }
     });
 
-    loc.save(function (err) {
-        response.send(err ? 500 : 201);
+    loc.save(function(err) {
+        res.send(err ? 500 : 201);
     });
 });
 
