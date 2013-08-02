@@ -64,6 +64,7 @@ module.exports = function(grunt) {
                     }
                 });
 
+                grunt.log.subhead('location #%d', i+1);
                 grunt.log.writeflags(location, 'submitting location');
 
                 location.save(function(err) {
