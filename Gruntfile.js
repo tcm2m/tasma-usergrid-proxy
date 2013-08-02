@@ -13,10 +13,19 @@ module.exports = function(grunt) {
                     logging: true
                 }
             }
+        },
+        nodemon: {
+            dev: {
+                options: {
+                    file: 'server.js',
+                    args: ['-L'],
+                    delayTime: 1
+                }
+            }
         }
     });
 
-    grunt.registerTask('default', ['generate-location']);
+    grunt.registerTask('default', ['nodemon']);
 
     grunt.registerTask('generate-location', "Verilen referans noktasına yakın lokasyonlar üreterek Usergrid'e gönderir.", function() {
         var usergrid = require('usergrid');
@@ -72,4 +81,5 @@ module.exports = function(grunt) {
         }, conf.get('interval'));
     });
 
+    grunt.loadNpmTasks('grunt-nodemon');
 };
