@@ -37,48 +37,53 @@ module.exports = function(grunt) {
 
         var client = new usergrid.client(conf.get('usergrid'));
 
-        var i = 1;
+        var i = 0;
 
-        var interval = setInterval(function() {
-            var latitude, longitude;
+        grunt.util.async.whilst(
+            function() {
+                return i < conf.get('times');
+            },
+            function(callback) {
+                var latitude, longitude;
 
-            if (Math.random() > 0.5) {
-                latitude = conf.get('latitude') + Math.random() * 0.0001;
-                longitude = conf.get('longitude') + Math.random() * 0.0001;
-            } else {
-                latitude = conf.get('latitude') - Math.random() * 0.0001;
-                longitude = conf.get('longitude') - Math.random() * 0.0001;
-            }
-
-            var location = new usergrid.entity({
-                client: client,
-                data: {
-                    type: 'locations',
-                    session_id: conf.get('sessionId'),
-                    latitude: latitude,
-                    longitude: longitude
-                }
-            });
-
-            grunt.log.writeflags(location.serialize(), 'submitting location');
-
-            location.save(function(err) {
-                if (err) {
-                    grunt.log.error(err);
+                if (Math.random() > 0.5) {
+                    latitude = conf.get('latitude') + Math.random() * 0.0001;
+                    longitude = conf.get('longitude') + Math.random() * 0.0001;
                 } else {
-                    conf.set('latitude', latitude);
-                    conf.set('longitude', longitude);
+                    latitude = conf.get('latitude') - Math.random() * 0.0001;
+                    longitude = conf.get('longitude') - Math.random() * 0.0001;
                 }
-            });
 
-            i++;
+                var location = new usergrid.entity({
+                    client: client,
+                    data: {
+                        type: 'locations',
+                        session_id: conf.get('sessionId'),
+                        latitude: latitude,
+                        longitude: longitude
+                    }
+                });
 
-            if (i > conf.get('times')) {
-                clearInterval(interval);
+                grunt.log.writeflags(location.serialize(), 'submitting location');
 
-                done();
+                location.save(function(err) {
+                    if (err) {
+                        grunt.log.error(err);
+                        callback(err);
+                    } else {
+                        conf.set('latitude', latitude);
+                        conf.set('longitude', longitude);
+
+                        setTimeout(callback, conf.get('interval'));
+                    }
+
+                    i++;
+                });
+            },
+            function(err) {
+                done(err);
             }
-        }, conf.get('interval'));
+        );
     });
 
     grunt.loadNpmTasks('grunt-nodemon');
