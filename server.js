@@ -6,13 +6,7 @@ var app      = express();
 
 conf.argv()
     .env()
-    .defaults({
-        usergrid: {
-            orgName: 'tcm2m',
-            appName: 'sandbox',
-            logging: true
-        }
-    });
+    .file({file: __dirname + '/config.json'});
 
 app.use(express.logger('dev'));
 

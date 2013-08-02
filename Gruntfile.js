@@ -6,12 +6,7 @@ module.exports = function(grunt) {
                 latitude: 40.79234133,
                 longitude: 29.46821250,
                 times: 10,
-                interval: 10000,
-                usergrid: {
-                    orgName: 'tcm2m',
-                    appName: 'sandbox',
-                    logging: true
-                }
+                interval: 10000
             }
         },
         nodemon: {
@@ -33,6 +28,7 @@ module.exports = function(grunt) {
         var done     = this.async();
 
         conf.argv()
+            .file({file: __dirname + '/config.json'})
             .defaults(this.options());
 
         var client = new usergrid.client(conf.get('usergrid'));
