@@ -79,9 +79,7 @@ module.exports = function(grunt) {
                     i++;
                 });
             },
-            function(err) {
-                done(err);
-            }
+            done
         );
     });
 
