@@ -41,6 +41,9 @@ app.get('/locations', function(req, res) {
         }
     });
 
+    console.log('submitting location:');
+    console.dir(loc);
+
     loc.save(function(err) {
         res.send(err ? 500 : 201);
     });
