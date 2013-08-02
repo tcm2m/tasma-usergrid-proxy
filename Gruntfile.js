@@ -68,7 +68,6 @@ module.exports = function(grunt) {
 
                 location.save(function(err) {
                     if (err) {
-                        grunt.log.error(err);
                         callback(err);
                     } else {
                         conf.set('latitude', latitude);
