@@ -6,7 +6,7 @@ package { 'nodejs':
   ensure => latest
 }
 ->
-package { 'nodemon':
+package { ['nodemon', 'grunt-cli']:
   ensure => installed,
   provider => npm
 }
