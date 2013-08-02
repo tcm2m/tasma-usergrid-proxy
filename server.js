@@ -1,7 +1,18 @@
-var express = require('express');
-var nmea = require('nmea-0183');
+var express  = require('express');
+var nmea     = require('nmea-0183');
 var usergrid = require('usergrid');
-var app = express();
+var conf     = require('nconf');
+var app      = express();
+
+conf.argv()
+    .env()
+    .defaults({
+        usergrid: {
+            orgName: 'tcm2m',
+            appName: 'sandbox',
+            logging: true
+        }
+    });
 
 app.use(express.logger('dev'));
 
@@ -9,11 +20,7 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
-var client = new usergrid.client({
-    orgName: 'tcm2m',
-    appName: 'sandbox',
-    logging: true
-});
+var client = new usergrid.client(conf.get('usergrid'));
 
 app.get('/', function(req, res) {
     res.send('Tasma Usergrid Proxy Server');
