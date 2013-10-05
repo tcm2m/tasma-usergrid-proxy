@@ -17,7 +17,7 @@
     "url": "https://github.com/tcm2m/tasma-usergrid-proxy/issues"
   },
   "dependencies": {
-    "express": "~3.3.4",
+    "express": "~3.4.0",
     "nmea-0183": "~0.0.6",
     "usergrid": "~0.10.5",
     "nconf": "~0.6.7"
